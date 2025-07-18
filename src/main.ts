@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -10,12 +9,14 @@ async function bootstrap() {
     .setTitle('API de Autenticação')
     .setDescription('Documentação da API de autenticação com Passport e JWT')
     .setVersion('1.0')
-    .addBearerAuth() // Para autenticação via token JWT
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  const port = 3000;
+  await app.listen(port);
+  console.log(`🚀 Swagger disponível em: http://localhost:${port}/api`);
 }
 bootstrap();
