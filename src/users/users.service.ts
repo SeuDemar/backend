@@ -15,7 +15,7 @@ export class UsersService {
       data: {
         name: registerDto.name,
         email: registerDto.email,
-        passwordhash: hashedPassword,
+        passwordHash: hashedPassword,
       },
     });
   }

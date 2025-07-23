@@ -9,9 +9,26 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id           String   @id @default(uuid()) @db.Uuid
   name         String   @db.VarChar
   email        String   @unique @db.VarChar
-  passwordhash String   @db.VarChar
-  createdat    DateTime @default(now()) @db.Timestamptz(6)
+  passwordHash String   @db.VarChar
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
 }
+
+model ItemType {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  items     Item[]
+}
+
+model Item {
+  id         String   @id @default(uuid())
+  name       String
+  price      Float
+  itemTypeId String
+  itemType   ItemType @relation(fields: [itemTypeId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
