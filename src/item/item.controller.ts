@@ -1,10 +1,24 @@
 // item.controller.ts
-import { Controller, Post, Get, Patch, Param, Body, Delete, ParseUUIDPipe } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Get,
+  Patch,
+  Param,
+  Body,
+  Delete,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags, ApiBody, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { ItemService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { access } from 'fs';
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 @ApiTags('items')
 @Controller('items')
 export class ItemController {

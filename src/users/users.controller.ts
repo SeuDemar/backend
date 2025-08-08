@@ -1,10 +1,13 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Patch, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
@@ -19,6 +22,7 @@ export class UsersController {
   @Get()
   @ApiResponse({ status: 200, description: 'List all users', type: [UserResponseDto] })
   async findAll() {
+    // converter o retorno para o tipo UserResponseDto
     return this.usersService.findAll();
   }
 
@@ -28,7 +32,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiResponse({ status: 200, description: 'Update user', type: UserResponseDto })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
